@@ -8,13 +8,8 @@ import {
   LogoutIcon
 } from '@heroicons/react/outline'
 import { SearchIcon, PlusCircleIcon, UserCircleIcon, BellIcon } from '@heroicons/react/solid'
-
-const navigation = [
-  { name: 'Prior Authorization', href: '#', icon: ClipboardIcon, current: true },
-  { name: 'Claims', href: '#', icon: MenuIcon, current: false },
-  { name: 'Medical Records', href: '#', icon: PlusCircleIcon, current: false },
-  { name: 'My Profile', href: '#', icon: UserCircleIcon, current: false }
-]
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -28,6 +23,14 @@ function classNames(...classes) {
 
 export default function Layout({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const router = useRouter();
+
+  const navigation = [
+    { name: 'Prior Authorization', href: '/', icon: ClipboardIcon, current: router.pathname === "/" },
+    { name: 'Claims', href: '/claims', icon: MenuIcon, current: router.pathname === "/claims" },
+    { name: 'Medical Records', href: '/medical-records', icon: PlusCircleIcon, current: router.pathname === "/medical-records" },
+    { name: 'My Profile', href: '/profile', icon: UserCircleIcon, current: router.pathname === "/profile" }
+  ]
 
   return (
     <div className="h-screen bg-[#d3dcf1] px-4 py-2 overflow-hidden flex">
@@ -127,7 +130,7 @@ export default function Layout({children}) {
             <div className="flex-grow mt-5 flex flex-col">
               <nav className="flex-1 bg-white px-2 space-y-1">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className={classNames(
@@ -143,7 +146,7 @@ export default function Layout({children}) {
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
